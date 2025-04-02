@@ -64,7 +64,47 @@ def get_action():
                 module = move
             else:
                 print("The module must be connected to the current module.")
+def spawn_npcs():
+    global num_modules, queen, vent_shafts, info_panels, workers
+    module_set = []
+    for counter in range(2,num_modules + 1):
+       module_set.append(counter)
+    random.shuffle(module_set)
+    i = 0
+    queen = module_set[i]
+    for counter in range(0,3):
+       i=i+1
+       vent_shafts.append(module_set[i])
+    for counter in range(0,2):
+       i=i+1
+       info_panels.append(module_set[i])
+
+    for counter in range(0,3):
+       i=i+1
+       workers.append(module_set[i])
+def check_vent_shafts():
+    global num_modules, module, vent_shafts, fuel
+    if module in vent_shafts:
+        print("There is a bank of fuel cells here.")
+        print("You load one into your flamethrower.")
+        fuel_gained = 50
+        print("Fuel was",fuel,"now reading:",fuel+fuel_gained)
+        fuel = fuel + fuel_gained
+        print("The doors suddenly lock shut.")
+        print("What is happening to the station?")
+        print("Our only escape is to climb into the ventilation shaft.")
+        print("We have no idea where we are going.")
+        print("We follow the passages and find ourselves sliding down.")
+        last_module = module
+        module = random.randint(1,num_modules)
+        load_module()
+        check_vent_shafts()
 #Main program starts here
+spawn_npcs()
+print("Queen alien is located in module:",queen)
+print("Ventilation shafts are located in modules:",vent_shafts)
+print("Information panels are located in modules:",info_panels)
+print("Worker aliens are located in modules:",workers)
 while alive and not won:
     load_module()
     if won == False and alive == True:
@@ -75,3 +115,4 @@ if won == True:
     print("Game over.  You win!")
 if alive == False:
     print("The station has run out of power.  Unable to sustain life support, you die.")
+    
